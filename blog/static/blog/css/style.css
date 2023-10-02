@@ -1,0 +1,24 @@
+body{
+    background-color: rgb(75,74,74);
+    color: antiquewhite;
+}
+
+.jumbo-color{
+    background-color: rgb(83,81,81);
+}
+.pass{
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.form-control
+{
+    background-color: rgb(177,168,168);
+}
+form{
+    margin-left: 90px;
+    width: 60%;
+} 
+.sgup{
+    margin-left: 90px;
+}
+    
