@@ -214,7 +214,7 @@ def addpost2(request):
             title = formobject.cleaned_data['title']
             desc = formobject.cleaned_data['desc']
             postdata=Post.objects.create(title=title,desc=desc,author=request.user)
-            postdata.save()
+            postdata.save() 
             messages.success(request,'You are add new post successfully!!!')
             return HttpResponseRedirect('/profile/')
         return render(request,'blog/addpost2.html',{'form':formobject,'user':request.user})
