@@ -31,6 +31,7 @@ AUTH_USER_MODEL = 'blog.User'
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -134,3 +135,9 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587 
 EMAIL_HOST_USER='jaymeenbagthariya@gmail.com'
 EMAIL_HOST_PASSWORD='gktxufyekcjqnywe'
+
+import os
+
+CRONJOBS = [
+    ('*/1 * * * *', 'blog.cron.my_scheduled_job','>>'+os.path.join(BASE_DIR,'debug.log')),
+]
