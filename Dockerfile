@@ -11,9 +11,13 @@ RUN apt-get install -y gcc musl-dev python3 python3-dev python3-pip \
 WORKDIR /code
 
 COPY requirements.txt .
+RUN pip install django_crontab
+
+RUN python -m pip install --upgrade pip && python -m pip install --upgrade setuptools wheel
+
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY . .	
 
 EXPOSE 8000
 
