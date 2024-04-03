@@ -86,6 +86,7 @@ class Post(models.Model):
     like=models.ManyToManyField(User,related_name='liked_by')
     unlike=models.ManyToManyField(User)
     created_at=models.DateTimeField(default=timezone.now)
+    isFavorite=models.BooleanField(default=False)
 
 
     def liked_by(self):
@@ -98,7 +99,7 @@ class Post(models.Model):
 @receiver(post_save,sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender,instance=None,created=False,**kwargs):
     if created:
-        Token.objects.create(user=instance)
+        Token.objects.create(user=instance) 
 
 
 class Sendrequest(models.Model):
