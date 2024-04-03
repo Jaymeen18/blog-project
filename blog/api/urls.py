@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 router  = DefaultRouter()
 
 router.register('crud',views.Postview,basename='post')
+# router.register('crud/<int:pk>/',views.UpdateIsFav,basename='postisFav')
 # router.register('signup',views.Registerapi,basename='signup')
 router.register('manage',views.Manageuser,basename='Manage')
 # router.register('getrequest',views.Getrequestview,basename='getrequest')
@@ -31,5 +32,8 @@ urlpatterns = [
     path('list-reply/<int:pk>/', views.Getreplycomment.as_view(), name='list-reply'),
     path('delete-reply/<int:pk>/', views.Deletereplycomment.as_view(), name='delete-reply'),
     path('update-reply/<int:pk>/', views.Updatereply.as_view(), name='update-reply'),
+    path('list_user/', views.Userlist.as_view(), name='user_list'),
+    path('crud/<int:pk>/',views.UpdateIsFavAsTrue.as_view(),name='postisFav'),
+    path('remove/Isfav/<int:pk>/',views.UpdateIsFavasFlase.as_view(),name='postnotisFav'),
     path('',include(router.urls))
 ]
