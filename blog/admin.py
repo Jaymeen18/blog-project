@@ -5,7 +5,7 @@ from .models import Post,User,Sendrequest,Connection,Comment
 
 @admin.register(Post)
 class PostModelAdmin(admin.ModelAdmin):
-    list_display=['id','title','desc','author','created_at','liked_by','unliked_by']
+    list_display=['id','title','desc','author','created_at','liked_by','unliked_by','isFavorite']
     
 @admin.register(User)
 class Useradmin(admin.ModelAdmin):
