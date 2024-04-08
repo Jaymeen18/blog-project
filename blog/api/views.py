@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status  
 from blog.models import Post,User,Sendrequest,Connection,Comment
 from django.shortcuts import render,HttpResponseRedirect
-from blog.api.serializers import Postapi,Registerview,Updateuser,Connectionapi,Sendrequestapi,Getrequestapi,Userapi,Postclass,Postlikeapi,Commentapi
+from blog.api.serializers import Postapi,Registerview,Updateuser,Connectionapi,Sendrequestapi,Getrequestapi, UserList,Userapi,Postclass,Postlikeapi,Commentapi,IsFavorite
 from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication,TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
@@ -15,12 +15,13 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from rest_framework import generics
 from rest_framework.views import APIView
+import json
 
 class Postview(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = Postapi                                                                      
-    authentication_classes=[TokenAuthentication]
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    # authentication_classes=[TokenAuthentication]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
     pagination_class=Mypagination
 
 
@@ -464,7 +465,7 @@ class Connectionview(generics.CreateAPIView):
                     "message": "Connection request not found",
                 }
                 return Response(response,status=status.HTTP_404_NOT_FOUND)
-             
+
 
 class Rejectrequestview(generics.UpdateAPIView):
     queryset = Sendrequest.objects.all()
@@ -759,7 +760,7 @@ class Getreplycomment(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = Comment.objects.filter(id=kwargs['pk']).first()
         print('querysettttttttttttttt: ', queryset)
-        if queryset==None:
+        if queryset==None:  
             response={
             "status":status.HTTP_404_NOT_FOUND,
             "message": "Not found",
@@ -845,3 +846,40 @@ class Updatereply(generics.UpdateAPIView):
                     "message": "You can not update this comment",
                     }  
                 return Response(response,status=status.HTTP_200_OK)
+
+
+
+class Userlist(generics.ListAPIView):
+    queryset=User.objects.all()
+    serializer_class=UserList
+
+    def get(self, request, *args, **kwargs):
+        print(self.queryset.filter(id=2))
+        return super().get(request, *args, **kwargs)
+
+
+
+class UpdateIsFavAsTrue(generics.UpdateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = IsFavorite   
+
+    def update(self, request, *args, **kwargs):
+        getPost = Post.objects.filter(id=kwargs["pk"]).first()
+        serializer=self.serializer_class(getPost, data ={'isFavorite':True},partial=True)
+        print('serializer: ', serializer)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class UpdateIsFavasFlase(generics.UpdateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = IsFavorite   
+
+    def update(self, request, *args, **kwargs):
+        getPost = Post.objects.filter(id=kwargs["pk"]).first()
+        serializer=self.serializer_class(getPost, data ={'isFavorite':False},partial=True)
+        print('serializer: ', serializer)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data,status=status.HTTP_200_OK)
